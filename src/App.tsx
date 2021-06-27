@@ -10,11 +10,13 @@ function App() {
     let[counter,setCounter] = useState(0)
 
     const incCounter =()=>{
-        let newCounter = ++counter
-        setCounter(newCounter)
+        setCounter(++counter)
     }
-    const resCounter =()=>{
-        setCounter(0)
+    const addStartValue = (startValue:number)=> {
+        setCounter(startValue)
+    }
+    const resCounter =(resValue: number)=>{
+        setCounter(resValue)
     }
 
   return (
@@ -23,6 +25,7 @@ function App() {
          counter={counter}
          incCounter={incCounter}
          resCounter={resCounter}
+         addStartValue={addStartValue}
      />
     </div>
   );

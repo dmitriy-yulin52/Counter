@@ -10,19 +10,54 @@
     border-radius: 10px;
     background-color: deepskyblue;
 }
+.content_blockTwo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+    margin: 50px auto;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: deepskyblue;
+}
 .content_counter{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 400px;
+    height: 100px;
     margin: 50px auto 10px auto;
     background-color: dodgerblue;
     border: 1px solid white;
     text-align: center;
     border-radius: 10px;
-    font-size: 140px;
+    font-size: 30px;
     color: white;
+}
+.error{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    width: 400px;
+    height: 100px;
+    margin: 50px auto 10px auto;
+    background-color: dodgerblue;
+    border: 1px solid red;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 30px;
 }
 .content_btn{
     display: flex;
     justify-content: center;
+    margin-bottom: 10px;
+}
+.content_btnTwo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 10px;
 }
 .inc {
@@ -34,6 +69,7 @@
     margin-right:5px ;
     font-size: 20px;
     color: white;
+    cursor: pointer;
 }
 .inc:disabled {
     opacity: 0.5;
@@ -43,14 +79,68 @@
     transform: scale(0.9);
 }
 
-.error{
-    color: red;
-    width: 400px;
-    margin: 50px auto 10px auto;
-    background-color: dodgerblue;
-    border: 1px solid white;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 140px;
+
+
+.maxValueBlock{
+    margin-bottom: 5px;
 }
+.startValueBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.content_startInput{
+    background-color: red;
+    color: blue;
+}
+
+.btnStartValue {
+    height: 30px;
+    margin-top: 10px;
+    background-color: dodgerblue;
+    border-radius: 5px;
+    margin-right:5px ;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+.btnStartValue:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.btnStartValue:hover {
+    transform: scale(0.9);
+}
+
+.valueInput{
+    border-radius: 5px;
+    border: 1px solid white;
+    text-align: center;
+    width: 250px;
+    height: 50px;
+    font-size: 20px;
+    background-color: dodgerblue;
+    color: white;
+    outline:none;
+}
+.valueInputError {
+    border-radius: 5px;
+    border: 1px solid white;
+    text-align: center;
+    width: 250px;
+    height: 50px;
+    font-size: 20px;
+    background-color: red;
+    color: white;
+    outline:none;
+}
+.message {
+    color: red;
+}
+
+
+
 
