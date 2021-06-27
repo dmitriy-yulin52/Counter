@@ -1,82 +1,115 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import c from './Calculator.module.css'
-
 
 
 type PropsType = {
     counter: number
-    resCounter: (resValue:number) => void
+    resCounter: (resValue: number) => void
     incCounter: () => void
-    addStartValue: (startValue:number)=> void
+    addStartValue: (startValue: number) => void
 }
 export const Calculator: React.FC<PropsType> = (props) => {
-    const {counter, resCounter, incCounter,addStartValue} = props
+    const {counter, resCounter, incCounter, addStartValue} = props
 
-    let[maxValue,setMaxValue] = useState(5)
-    let[startValue,setStartValue] = useState(0)
-    let[message,setMessage] = useState('')
+    let [maxValue, setMaxValue] = useState(5)
+    let [startValue, setStartValue] = useState(0)
+    let [message, setMessage] = useState('')
+
+    //startValue
+    useEffect(()=>{
+        let valueAsString = localStorage.getItem('clickStartValue')
+        if(valueAsString){
+            let newStartValue = JSON.parse(valueAsString)
+            setStartValue(newStartValue)
+        }
+    },[])
+    useEffect(() => {
+       localStorage.setItem('clickStartValue', JSON.stringify(startValue))
+    }, [startValue]);
+
+    //maxValue
+    useEffect(() => {
+        let valueAsString = localStorage.getItem('clickMaxValue')
+        if(valueAsString){
+            let newMaxValue = JSON.parse(valueAsString)
+            setMaxValue(newMaxValue)
+        }
+        localStorage.removeItem('clickMaxValue')
+    }, []);
+    useEffect(()=> {
+        localStorage.setItem('clickMaxValue', JSON.stringify(maxValue))
+    },[maxValue])
 
 
-    const onChangeMaxValue = (e:ChangeEvent<HTMLInputElement>)=>{
-        if(+e.currentTarget.value){
+    const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
+        if (+e.currentTarget.value) {
             setMessage('enter values and press "set"')
         }
         setMaxValue(+e.currentTarget.value)
+
     }
+    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
 
-
-    const onChangeStartValue = (e:ChangeEvent<HTMLInputElement>)=>{
-        if(+e.currentTarget.value >= 0){
+        if (+e.currentTarget.value >= 0) {
             setMessage('enter values and press "set"')
+            setStartValue(+e.currentTarget.value)
         }
-        if(+e.currentTarget.value < 0){
+        if (+e.currentTarget.value < 0) {
             setMessage('Incorrect value')
+            setStartValue(+e.currentTarget.value)
         }
-        if(+e.currentTarget.value >= maxValue){
+        if (+e.currentTarget.value >= maxValue) {
             setMessage('Incorrect value')
+            setStartValue(+e.currentTarget.value)
         }
-        setStartValue(+e.currentTarget.value)
     }
-    const onClickStartValue =()=>{
+    const onClickStartValue = () => {
         addStartValue(startValue)
         setMessage('')
     }
-
-
-    const onClickResCounter = ()=>{
+    const onClickResCounter = () => {
         resCounter(0)
     }
-
 
 
     return (
         <div className={c.content}>
             <div className={c.content_block}>
                 <div>
-                    <div className={ counter >= maxValue || startValue >= maxValue || startValue < 0  ? c.error : c.content_counter }>{message ? message : counter}</div>
+                    <div
+                        className={counter >= maxValue || startValue >= maxValue || startValue < 0 ? c.error : c.content_counter}>{message ? message : counter}</div>
                 </div>
                 <div className={c.content_btn}>
                     {/*<Button value={'Inc'} callBack={incCounter} counter={counter} disabled={counter >= 5}/>*/}
                     {/*<Button value={'Res'} callBack={resCounter} counter={counter} disabled={!counter}/>*/}
                     {/*counter >= maxValue || startValue >= maxValue || startValue < 0*/}
-                    <button onClick={incCounter} className={c.inc} disabled={message === 'Incorrect value' || message === 'enter values and press "set"' || counter>= maxValue}>Inc</button>
-                    <button onClick={onClickResCounter} className={c.inc} disabled={message === 'Incorrect value' || message === 'enter values and press "set"'}>Res</button>
+                    <button onClick={incCounter} className={c.inc}
+                            disabled={message === 'Incorrect value' || message === 'enter values and press "set"' || counter >= maxValue}>Inc
+                    </button>
+                    <button onClick={onClickResCounter} className={c.inc}
+                            disabled={message === 'Incorrect value' || message === 'enter values and press "set"'}>Res
+                    </button>
                 </div>
             </div>
             <div className={c.content_blockTwo}>
                 <div className={c.content_btnTwo}>
                     <div className={c.maxValueBlock}>
                         <div>
-                            <span>MaxValue:</span>  <input onChange={onChangeMaxValue} value={maxValue} type="number" className={ maxValue <= startValue ? c.valueInputError : c.valueInput}/>
+                            <span>MaxValue:</span> <input onChange={onChangeMaxValue} value={maxValue} type="number"
+                                                          className={maxValue <= startValue ? c.valueInputError : c.valueInput}/>
                         </div>
 
                     </div>
                     <div className={c.startValueBlock}>
-                        <div >
-                            <span>StartValue:</span> <input onChange={onChangeStartValue} value={startValue} type="number" className={ startValue >= maxValue ? c.valueInputError : c.valueInput}/>
+                        <div>
+                            <span>StartValue:</span> <input onChange={onChangeStartValue} value={startValue}
+                                                            type="number"
+                                                            className={startValue >= maxValue ? c.valueInputError : c.valueInput}/>
                         </div>
                         <div>
-                            <button onClick={onClickStartValue} className={c.btnStartValue} disabled={startValue >= maxValue || startValue < 0 || counter === maxValue }>Set</button>
+                            <button onClick={onClickStartValue} className={c.btnStartValue}
+                                    disabled={startValue >= maxValue || startValue < 0 || counter === maxValue}>Set
+                            </button>
                         </div>
                     </div>
                     {/*<button onClick={onClickInc} className={props.counter >= 5 ? c.op :c.inc} disabled={props.counter >= 5}>Inc</button>*/}
