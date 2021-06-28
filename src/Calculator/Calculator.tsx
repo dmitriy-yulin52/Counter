@@ -14,31 +14,32 @@ export const Calculator: React.FC<PropsType> = (props) => {
     let [maxValue, setMaxValue] = useState(5)
     let [startValue, setStartValue] = useState(0)
     let [message, setMessage] = useState('')
+    let [active, setActive] = useState(false)
 
     //startValue
-    useEffect(()=>{
+    useEffect(() => {
         let valueAsString = localStorage.getItem('clickStartValue')
-        if(valueAsString){
+        if (valueAsString) {
             let newStartValue = JSON.parse(valueAsString)
             setStartValue(newStartValue)
         }
-    },[])
+    }, [])
     useEffect(() => {
-       localStorage.setItem('clickStartValue', JSON.stringify(startValue))
+        localStorage.setItem('clickStartValue', JSON.stringify(startValue))
     }, [startValue]);
 
     //maxValue
     useEffect(() => {
         let valueAsString = localStorage.getItem('clickMaxValue')
-        if(valueAsString){
+        if (valueAsString) {
             let newMaxValue = JSON.parse(valueAsString)
             setMaxValue(newMaxValue)
         }
         localStorage.removeItem('clickMaxValue')
     }, []);
-    useEffect(()=> {
+    useEffect(() => {
         localStorage.setItem('clickMaxValue', JSON.stringify(maxValue))
-    },[maxValue])
+    }, [maxValue])
 
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -52,16 +53,21 @@ export const Calculator: React.FC<PropsType> = (props) => {
 
         if (+e.currentTarget.value >= 0) {
             setMessage('enter values and press "set"')
-            setStartValue(+e.currentTarget.value)
+            // setStartValue(+e.currentTarget.value)
+            setActive(false)
         }
         if (+e.currentTarget.value < 0) {
             setMessage('Incorrect value')
-            setStartValue(+e.currentTarget.value)
+            // setStartValue(+e.currentTarget.value)
+            setActive(true)
+
         }
         if (+e.currentTarget.value >= maxValue) {
             setMessage('Incorrect value')
-            setStartValue(+e.currentTarget.value)
+            // setStartValue(+e.currentTarget.value)
+            setActive(true)
         }
+        setStartValue(+e.currentTarget.value)
     }
     const onClickStartValue = () => {
         addStartValue(startValue)
@@ -72,17 +78,21 @@ export const Calculator: React.FC<PropsType> = (props) => {
     }
 
 
+
     return (
         <div className={c.content}>
             <div className={c.content_block}>
+                {/*<div>*/}
+                {/*    <div*/}
+                {/*        className={counter >= maxValue || startValue >= maxValue || startValue < 0 ? c.error : c.content_counter}>{message ? message : counter}</div>*/}
+                {/*</div>*/}
                 <div>
                     <div
-                        className={counter >= maxValue || startValue >= maxValue || startValue < 0 ? c.error : c.content_counter}>{message ? message : counter}</div>
+                        className={active ? c.error : c.content_counter && counter >= maxValue ? c.error : c.content_counter}>{message ? message : counter}</div>
                 </div>
                 <div className={c.content_btn}>
                     {/*<Button value={'Inc'} callBack={incCounter} counter={counter} disabled={counter >= 5}/>*/}
                     {/*<Button value={'Res'} callBack={resCounter} counter={counter} disabled={!counter}/>*/}
-                    {/*counter >= maxValue || startValue >= maxValue || startValue < 0*/}
                     <button onClick={incCounter} className={c.inc}
                             disabled={message === 'Incorrect value' || message === 'enter values and press "set"' || counter >= maxValue}>Inc
                     </button>
@@ -94,17 +104,19 @@ export const Calculator: React.FC<PropsType> = (props) => {
             <div className={c.content_blockTwo}>
                 <div className={c.content_btnTwo}>
                     <div className={c.maxValueBlock}>
+                        <span>MaxValue:</span>
                         <div>
-                            <span>MaxValue:</span> <input onChange={onChangeMaxValue} value={maxValue} type="number"
-                                                          className={maxValue <= startValue ? c.valueInputError : c.valueInput}/>
+                            <input onChange={onChangeMaxValue} value={maxValue} type="number"
+                                   className={maxValue <= startValue ? c.valueInputError : c.valueInput}/>
                         </div>
 
                     </div>
                     <div className={c.startValueBlock}>
+                        <span>StartValue:</span>
                         <div>
-                            <span>StartValue:</span> <input onChange={onChangeStartValue} value={startValue}
-                                                            type="number"
-                                                            className={startValue >= maxValue ? c.valueInputError : c.valueInput}/>
+                            <input onChange={onChangeStartValue} value={startValue}
+                                   type="number"
+                                   className={startValue >= maxValue ? c.valueInputError : c.valueInput}/>
                         </div>
                         <div>
                             <button onClick={onClickStartValue} className={c.btnStartValue}
@@ -112,37 +124,9 @@ export const Calculator: React.FC<PropsType> = (props) => {
                             </button>
                         </div>
                     </div>
-                    {/*<button onClick={onClickInc} className={props.counter >= 5 ? c.op :c.inc} disabled={props.counter >= 5}>Inc</button>*/}
-
-                    {/*<button onClick={onClickRes} className={props.counter <= 4 ? c.op :c.res} disabled={props.counter <= 4}>Res</button>*/}
                 </div>
             </div>
         </div>
     )
 }
 
-type ButtonType = {
-    disabled: boolean
-    value: string
-    counter: number
-    callBack: () => void
-}
-
-
-const Button: React.FC<ButtonType> = (props) => {
-    const {callBack, value, disabled} = props
-
-    const onClick = () => {
-        callBack()
-    }
-
-    return (
-        <button
-            onClick={onClick}
-            className={c.inc}
-            disabled={disabled}
-        >
-            {value}
-        </button>
-    )
-}
