@@ -3,14 +3,13 @@ import c from "../Calculator/Calculator.module.css";
 
 type ButtonType = {
     disabled: boolean
-    value: string
-    counter: number
     callBack: () => void
+    title: string
 }
 
 
-const Button: React.FC<ButtonType> = (props) => {
-    const {callBack, value, disabled} = props
+export const Button: React.FC<ButtonType> = (props) => {
+    const {callBack, title, disabled} = props
 
     const onClick = () => {
         callBack()
@@ -22,7 +21,7 @@ const Button: React.FC<ButtonType> = (props) => {
             className={c.inc}
             disabled={disabled}
         >
-            {value}
+            {title}
         </button>
     )
 }

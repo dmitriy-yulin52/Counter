@@ -1,131 +1,147 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import c from './Calculator.module.css'
+import {Button} from "../Button/Button";
+import {CalculatorType} from "../Redux/calculator-reducer";
 
 
 type PropsType = {
-    counter: number
-    resCounter: (resValue: number) => void
-    incCounter: () => void
-    addStartValue: (startValue: number) => void
+    calculator:CalculatorType
+    counter: (counter:number)=> void
+    maxValue: (value: number) => void
+    startValue: (value: number) => void
+    message: (message: string) => void
 }
 export const Calculator: React.FC<PropsType> = (props) => {
-    const {counter, resCounter, incCounter, addStartValue} = props
+    const {counter, maxValue, startValue, message,calculator} = props
 
-    let [maxValue, setMaxValue] = useState(5)
-    let [startValue, setStartValue] = useState(0)
-    let [message, setMessage] = useState('')
+    // let [maxValue, setMaxValue] = useState(5)
+    // let [startValue, setStartValue] = useState(0)
+    // let [message, setMessage] = useState('')
     let [active, setActive] = useState(false)
+    let [collapsed, setCollapsed] = useState(true)
 
     //startValue
-    useEffect(() => {
-        let valueAsString = localStorage.getItem('clickStartValue')
-        if (valueAsString) {
-            let newStartValue = JSON.parse(valueAsString)
-            setStartValue(newStartValue)
-        }
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('clickStartValue', JSON.stringify(startValue))
-    }, [startValue]);
+    // useEffect(() => {
+    //     let valueAsString = localStorage.getItem('clickStartValue')
+    //     if (valueAsString) {
+    //         let newStartValue = JSON.parse(valueAsString)
+    //         setStartValue(newStartValue)
+    //     }
+    // }, [])
+    // useEffect(() => {
+    //     localStorage.setItem('clickStartValue', JSON.stringify(startValue))
+    // }, [startValue]);
+    //
+    // //maxValue
+    // useEffect(() => {
+    //     let valueAsString = localStorage.getItem('clickMaxValue')
+    //     if (valueAsString) {
+    //         let newMaxValue = JSON.parse(valueAsString)
+    //         setMaxValue(newMaxValue)
+    //     }
+    //     localStorage.removeItem('clickMaxValue')
+    // }, []);
+    // useEffect(() => {
+    //     localStorage.setItem('clickMaxValue', JSON.stringify(maxValue))
+    // }, [maxValue])
 
-    //maxValue
-    useEffect(() => {
-        let valueAsString = localStorage.getItem('clickMaxValue')
-        if (valueAsString) {
-            let newMaxValue = JSON.parse(valueAsString)
-            setMaxValue(newMaxValue)
-        }
-        localStorage.removeItem('clickMaxValue')
-    }, []);
-    useEffect(() => {
-        localStorage.setItem('clickMaxValue', JSON.stringify(maxValue))
-    }, [maxValue])
+    const incCounter = () => {
+        counter(++calculator.counter)
+    }
 
+    const resCounter = (resValue: number) => {
+        counter(resValue)
+    }
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
         if (+e.currentTarget.value) {
-            setMessage('enter values and press "set"')
+            message('enter values and press "set"')
         }
-        setMaxValue(+e.currentTarget.value)
+        maxValue(+e.currentTarget.value)
 
+    }
+    const addStartValue = (startValue: number) => {
+        counter(startValue)
     }
     const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
 
         if (+e.currentTarget.value >= 0) {
-            setMessage('enter values and press "set"')
-            // setStartValue(+e.currentTarget.value)
+            message('enter values and press "set"')
             setActive(false)
         }
         if (+e.currentTarget.value < 0) {
-            setMessage('Incorrect value')
-            // setStartValue(+e.currentTarget.value)
+            message('Incorrect value')
             setActive(true)
 
         }
-        if (+e.currentTarget.value >= maxValue) {
-            setMessage('Incorrect value')
-            // setStartValue(+e.currentTarget.value)
+        if (+e.currentTarget.value >= calculator.maxValue) {
+            message('Incorrect value')
             setActive(true)
         }
-        setStartValue(+e.currentTarget.value)
+        startValue(+e.currentTarget.value)
     }
     const onClickStartValue = () => {
-        addStartValue(startValue)
-        setMessage('')
+        addStartValue(calculator.startValue)
+        message('')
+        setCollapsed(!collapsed)
     }
     const onClickResCounter = () => {
         resCounter(0)
     }
 
 
-
     return (
         <div className={c.content}>
-            <div className={c.content_block}>
-                {/*<div>*/}
-                {/*    <div*/}
-                {/*        className={counter >= maxValue || startValue >= maxValue || startValue < 0 ? c.error : c.content_counter}>{message ? message : counter}</div>*/}
-                {/*</div>*/}
+
+            { collapsed ? <div className={c.content_block}>
                 <div>
                     <div
-                        className={active ? c.error : c.content_counter && counter >= maxValue ? c.error : c.content_counter}>{message ? message : counter}</div>
+                        className={active ? c.error : c.content_counter && counter >= maxValue ? c.error : c.content_counter}>{calculator.message ? calculator.message : calculator.counter}</div>
                 </div>
                 <div className={c.content_btn}>
-                    {/*<Button value={'Inc'} callBack={incCounter} counter={counter} disabled={counter >= 5}/>*/}
-                    {/*<Button value={'Res'} callBack={resCounter} counter={counter} disabled={!counter}/>*/}
-                    <button onClick={incCounter} className={c.inc}
-                            disabled={message === 'Incorrect value' || message === 'enter values and press "set"' || counter >= maxValue}>Inc
-                    </button>
-                    <button onClick={onClickResCounter} className={c.inc}
-                            disabled={message === 'Incorrect value' || message === 'enter values and press "set"'}>Res
-                    </button>
+                    <Button callBack={incCounter}
+                            disabled={active || calculator.counter >= calculator.maxValue || calculator.message === 'enter values and press "set"'}
+                            title={'Inc'}
+                    />
+                    <Button callBack={onClickResCounter}
+                            disabled={active || calculator.message === 'enter values and press "set"'}
+                            title={'Res'}
+                    />
+                    <Button callBack={onClickStartValue}
+                            disabled={calculator.startValue >= calculator.maxValue || calculator.startValue < 0 || calculator.counter === calculator.maxValue}
+                            title={'Set'}
+                    />
                 </div>
             </div>
+            :
             <div className={c.content_blockTwo}>
                 <div className={c.content_btnTwo}>
                     <div className={c.maxValueBlock}>
                         <span>MaxValue:</span>
                         <div>
-                            <input onChange={onChangeMaxValue} value={maxValue} type="number"
-                                   className={maxValue <= startValue ? c.valueInputError : c.valueInput}/>
+                            <input onChange={onChangeMaxValue} value={calculator.maxValue} type="number"
+                                   className={calculator.maxValue <= calculator.startValue ? c.valueInputError : c.valueInput}/>
                         </div>
-
                     </div>
+
                     <div className={c.startValueBlock}>
                         <span>StartValue:</span>
                         <div>
-                            <input onChange={onChangeStartValue} value={startValue}
+                            <input onChange={onChangeStartValue} value={calculator.startValue}
                                    type="number"
-                                   className={startValue >= maxValue ? c.valueInputError : c.valueInput}/>
+                                   className={calculator.startValue >= calculator.maxValue ? c.valueInputError : c.valueInput}/>
                         </div>
                         <div>
-                            <button onClick={onClickStartValue} className={c.btnStartValue}
-                                    disabled={startValue >= maxValue || startValue < 0 || counter === maxValue}>Set
-                            </button>
+                            <Button callBack={onClickStartValue}
+                                    disabled={calculator.startValue >= calculator.maxValue || calculator.startValue < 0 || calculator.counter === calculator.maxValue}
+                                    title={'Set'}
+                            />
                         </div>
                     </div>
+
                 </div>
             </div>
+            }
         </div>
     )
 }
