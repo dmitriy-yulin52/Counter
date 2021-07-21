@@ -1,12 +1,19 @@
 import {connect} from "react-redux";
 import {Calculator} from "./Calculator";
 import {AppStateType} from "../Redux/storeRedux";
-import {CalculatorType, setCounterAC, setMaxValueAC, setMessageAC, setStartValueAC} from "../Redux/calculator-reducer";
+import {
+    CalculatorType,
+    setCollapsedAC,
+    setCounterAC,
+    setMaxValueAC,
+    setMessageAC,
+    setStartValueAC
+} from "../Redux/calculator-reducer";
 import { Dispatch } from 'redux';
 
 
 
-type mapStateToProps = {
+type mapStateToPropsType = {
     calculator: CalculatorType
 }
 type mapDispatchToPropsType ={
@@ -14,11 +21,12 @@ type mapDispatchToPropsType ={
     maxValue:(value: number)=> void
     startValue:(value: number)=> void
     message:(message: string)=> void
+    collapsed:(collapsed:boolean)=> void
 }
 
 
 
-const mapStateToProps = (state: AppStateType):mapStateToProps => {
+const mapStateToProps = (state: AppStateType):mapStateToPropsType => {
     return {
         calculator: state.calculator
     }
@@ -38,6 +46,9 @@ const mapDispatchToProps = (dispatch:Dispatch):mapDispatchToPropsType => {
         },
         message:(message:string)=> {
             dispatch(setMessageAC(message))
+        },
+        collapsed:(collapsed:boolean)=> {
+            dispatch(setCollapsedAC(collapsed))
         }
     }
 }

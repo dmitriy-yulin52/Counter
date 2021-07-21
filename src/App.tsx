@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
-import {Calculator} from "./Calculator/Calculator";
+import React from 'react';
+import {NavLink, Route} from 'react-router-dom';
+import  './App.css';
 import CalculatorContainer from "./Calculator/CalculatorContainer";
 
 
@@ -32,13 +32,20 @@ function App() {
 
     return (
         <div className="App">
-            {/*<Calculator*/}
-            {/*    counter={counter}*/}
-            {/*    incCounter={incCounter}*/}
-            {/*    resCounter={resCounter}*/}
-            {/*    addStartValue={addStartValue}*/}
-            {/*/>*/}
-            <CalculatorContainer/>
+            <div className={'block-navLink'}>
+                <div className={'navLink'}>
+                    <NavLink to={'/global'}>Counter</NavLink>
+                </div>
+                <div className={'navLink'}>
+                    <NavLink to={'/Calculator'}>Calculator</NavLink>
+                </div>
+            </div>
+
+            <Route
+                path={'/global'}
+                render={()=><CalculatorContainer/>}
+            />
+
         </div>
     );
 }

@@ -1,23 +1,23 @@
 
 
-
-
-
-
 export type CalculatorType = typeof initialState
 type ActionType =
     ReturnType<typeof setMaxValueAC>
     | ReturnType<typeof setCounterAC>
     | ReturnType<typeof setStartValueAC>
     | ReturnType<typeof setMessageAC>
+    | ReturnType<typeof setCollapsedAC>
 
 
 const initialState = {
     counter: 0,
     maxValue: 5,
     startValue: 0,
-    message: ''
+    message: '',
+    collapsed:true
 }
+
+
 
 export const calculatorReducer = (state:CalculatorType = initialState , action:ActionType):CalculatorType => {
     switch (action.type){
@@ -41,6 +41,11 @@ export const calculatorReducer = (state:CalculatorType = initialState , action:A
                 ...state,
                 message: action.message
             }
+        case "collapsed":
+            return {
+                ...state,
+                collapsed: action.collapsed
+            }
         default:
             return state
     }
@@ -57,5 +62,8 @@ export const setStartValueAC = (value: number) => {
 }
 export const setMessageAC = (message: string) => {
     return {type: "message", message} as const
+}
+export const setCollapsedAC = (collapsed: boolean) => {
+    return {type: "collapsed", collapsed} as const
 }
 
