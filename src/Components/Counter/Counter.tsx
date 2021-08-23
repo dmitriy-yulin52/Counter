@@ -1,54 +1,65 @@
 import style from "../Counter/Counter.module.sass";
 import {Button} from "../../Button/Button";
-import React, {useState} from "react";
-import {CalculatorType} from "../../Redux/calculator-reducer";
+import React from "react";
 
 type CounterType = {
-    calculator: CalculatorType
-    counter: (counter: number) => void
-    collapsed:(collapsed:boolean)=> void
-
+    startCounter:number
+    startCollapsed:boolean
+    maxValue:number
+    startValue:number
+    message:string
+    setIncCounter:(counter:number)=> void
+    setResCounter:(resCounter:number)=> void
+    setStartValue:(startValue:number,startCollapsed:boolean)=> void
 }
 
-export const Counter: React.FC<CounterType> = (props) => {
-    const {counter, calculator,collapsed} = props
+export const Counter:React.FC<CounterType> = React.memo((props) => {
+    let {
+        startCollapsed,
+        startCounter,
+        startValue,
+        maxValue,
+        message,
+        setIncCounter,
+        setResCounter,
+        setStartValue,
+    } = props
 
 
-    const incCounter =()=> {
-        counter(++calculator.counter)
+    const onClickCounterHandler = () => {
+        setIncCounter(++startCounter)
     }
-    const onClickResCounter =()=> {
-        counter(0)
+    const onClickResCounterHandler = () => {
+        setResCounter(0)
     }
-    const onClickStartValue = ()=> {
-        counter(calculator.startValue)
-        collapsed(!calculator.collapsed)
+    const onClickStartValueHandler = () => {
+        setStartValue(startValue,!startCollapsed)
     }
 
-    const disabledIncCounter = calculator.counter >= calculator.maxValue || calculator.message === 'enter values and press "set"'
-    const disabledResCounter = calculator.message === 'enter values and press "set"'
-    const disabledStartValue = calculator.startValue >= calculator.maxValue || calculator.startValue < 0 || calculator.counter === calculator.maxValue
+    const disabledIncCounter = startCounter >= maxValue || message === 'enter values and press "set"'
+    const disabledResCounter = message === 'enter values and press "set"'
+    const disabledStartValue = startValue >= maxValue || startValue < 0 || startCounter === maxValue
 
     return (
         <div className={style.content_block}>
-            <div >
+            <div>
                 <div
-                    className={calculator.counter >= calculator.maxValue ? style.error : style.content_counter}>{calculator.message ? calculator.message : calculator.counter}</div>
+                    className={startCounter >= maxValue ? style.error : style.content_counter}>{message ? message : startCounter}</div>
             </div>
             <div className={style.content_btn}>
-                <Button callBack={incCounter}
+                <Button callBack={onClickCounterHandler}
                         disabled={disabledIncCounter}
                         title={'Inc'}
                 />
-                <Button callBack={onClickResCounter}
+                <Button callBack={onClickResCounterHandler}
                         disabled={disabledResCounter}
                         title={'Res'}
                 />
-                <Button callBack={onClickStartValue}
+                <Button callBack={onClickStartValueHandler}
                         disabled={disabledStartValue}
                         title={'Set'}
                 />
             </div>
         </div>
     )
-}
+})

@@ -1,12 +1,41 @@
+export enum CALCULATOR_ACTION_TYPE {
+    SET_COUNTER = 'calculator-reducer/SET_COUNTER',
+    SET_MAX_VALUE = 'calculator-reducer/SET_MAX_VALUE',
+    SET_START_VALUE = 'calculator-reducer/SET_START_VALUE',
+    SET_MESSAGE = 'calculator-reducer/SET_MESSAGE',
+    SET_COLLAPSED = 'calculator-reducer/SET_COLLAPSED'
+}
 
 
 export type CalculatorType = typeof initialState
 type ActionType =
-    ReturnType<typeof setMaxValueAC>
-    | ReturnType<typeof setCounterAC>
-    | ReturnType<typeof setStartValueAC>
-    | ReturnType<typeof setMessageAC>
-    | ReturnType<typeof setCollapsedAC>
+    SetCounterACType
+    | SetMaxValueACType
+    | SetStartValueACType
+    | SetMessageACType
+    | SetCollapsedACType
+
+
+type SetCounterACType = {
+    type: CALCULATOR_ACTION_TYPE.SET_COUNTER,
+    counter: number
+}
+type SetMaxValueACType = {
+    type: CALCULATOR_ACTION_TYPE.SET_MAX_VALUE,
+    value: number
+}
+type SetStartValueACType = {
+    type: CALCULATOR_ACTION_TYPE.SET_START_VALUE,
+    value: number
+}
+type SetMessageACType = {
+    type: CALCULATOR_ACTION_TYPE.SET_MESSAGE,
+    message: string
+}
+type SetCollapsedACType = {
+    type: CALCULATOR_ACTION_TYPE.SET_COLLAPSED,
+    collapsed: boolean
+}
 
 
 const initialState = {
@@ -14,34 +43,33 @@ const initialState = {
     maxValue: 5,
     startValue: 0,
     message: '',
-    collapsed:true
+    collapsed: true
 }
 
 
-
-export const calculatorReducer = (state:CalculatorType = initialState , action:ActionType):CalculatorType => {
-    switch (action.type){
-        case "counter":
+export const calculatorReducer = (state: CalculatorType = initialState, action: ActionType): CalculatorType => {
+    switch (action.type) {
+        case CALCULATOR_ACTION_TYPE.SET_COUNTER:
             return {
                 ...state,
-                counter:action.counter
+                counter: action.counter
             }
-        case "maxValue":
+        case CALCULATOR_ACTION_TYPE.SET_MAX_VALUE:
             return {
                 ...state,
                 maxValue: action.value
             }
-        case "startValue":
+        case CALCULATOR_ACTION_TYPE.SET_START_VALUE:
             return {
                 ...state,
                 startValue: action.value
             }
-        case "message":
+        case CALCULATOR_ACTION_TYPE.SET_MESSAGE:
             return {
                 ...state,
                 message: action.message
             }
-        case "collapsed":
+        case CALCULATOR_ACTION_TYPE.SET_COLLAPSED:
             return {
                 ...state,
                 collapsed: action.collapsed
@@ -51,19 +79,34 @@ export const calculatorReducer = (state:CalculatorType = initialState , action:A
     }
 }
 
-export const setCounterAC = (counter: number) => {
-    return {type: "counter", counter} as const
+export const setCounterAC = (counter: number): SetCounterACType => {
+    return {
+        type: CALCULATOR_ACTION_TYPE.SET_COUNTER,
+        counter
+    }
 }
-export const setMaxValueAC = (value: number) => {
-    return {type: "maxValue", value} as const
+export const setMaxValueAC = (value: number): SetMaxValueACType => {
+    return {
+        type: CALCULATOR_ACTION_TYPE.SET_MAX_VALUE,
+        value
+    }
 }
-export const setStartValueAC = (value: number) => {
-    return {type: "startValue", value} as const
+export const setStartValueAC = (value: number): SetStartValueACType => {
+    return {
+        type: CALCULATOR_ACTION_TYPE.SET_START_VALUE,
+        value
+    }
 }
-export const setMessageAC = (message: string) => {
-    return {type: "message", message} as const
+export const setMessageAC = (message: string): SetMessageACType => {
+    return {
+        type: CALCULATOR_ACTION_TYPE.SET_MESSAGE,
+        message
+    }
 }
-export const setCollapsedAC = (collapsed: boolean) => {
-    return {type: "collapsed", collapsed} as const
+export const setCollapsedAC = (collapsed: boolean): SetCollapsedACType => {
+    return {
+        type: CALCULATOR_ACTION_TYPE.SET_COLLAPSED,
+        collapsed
+    }
 }
 

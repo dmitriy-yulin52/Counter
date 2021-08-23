@@ -6,15 +6,28 @@ import {CalculatorType} from "../../Redux/calculator-reducer";
 type SetCounterType = {
     calculator: CalculatorType
     counter: (counter: number) => void
-    maxValue: (value: number) => void
+    smaxValue: (value: number) => void
     message: (message: string) => void
-    startValue: (value: number) => void
-    collapsed:(collapsed:boolean)=> void
+    sstartValue: (value: number) => void
+    scollapsed:(collapsed:boolean)=> void
+    maxValue:number
+    startValue:number
+    startCounter:number
+    startCollapsed:boolean
 }
 
 
 export const SetCounter:React.FC<SetCounterType>=(props)=> {
-    const {calculator,counter,maxValue,message,startValue,collapsed} = props
+
+    const {
+        calculator,
+        counter,
+        maxValue,
+        message,
+        startValue,
+        startCounter,
+        startCollapsed,
+    } = props
 
 
     const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +44,7 @@ export const SetCounter:React.FC<SetCounterType>=(props)=> {
             message('Incorrect value')
 
         }
-        if (+e.currentTarget.value >= calculator.maxValue) {
+        if (+e.currentTarget.value >= maxValue) {
             message('Incorrect value')
         }
         startValue(+e.currentTarget.value)
@@ -40,12 +53,12 @@ export const SetCounter:React.FC<SetCounterType>=(props)=> {
         counter(startValue)
     }
     const onClickStartValue = () => {
-        addStartValue(calculator.startValue)
+        addStartValue(startValue)
         message('')
-        collapsed(!calculator.collapsed)
+        collapsed(!startCollapsed)
     }
 
-    const disabledStartValue = calculator.startValue >= calculator.maxValue || calculator.startValue < 0 || calculator.counter === calculator.maxValue
+    const disabledStartValue = startValue >= maxValue || startValue < 0 || startCounter === maxValue
 
     return(
         <div className={style.content_blockTwo}>
@@ -53,17 +66,17 @@ export const SetCounter:React.FC<SetCounterType>=(props)=> {
                 <div className={style.maxValueBlock}>
                     <span>MaxValue:</span>
                     <div>
-                        <input onChange={onChangeMaxValue} value={calculator.maxValue} type="number"
-                               className={calculator.maxValue <= calculator.startValue ? style.valueInputError : style.valueInput}/>
+                        <input onChange={onChangeMaxValue} value={maxValue} type="number"
+                               className={maxValue <= startValue ? style.valueInputError : style.valueInput}/>
                     </div>
                 </div>
 
                 <div className={style.startValueBlock}>
                     <span>StartValue:</span>
                     <div>
-                        <input onChange={onChangeStartValue} value={calculator.startValue}
+                        <input onChange={onChangeStartValue} value={startValue}
                                type="number"
-                               className={calculator.startValue >= calculator.maxValue ? style.valueInputError : style.valueInput}/>
+                               className={startValue >= maxValue ? style.valueInputError : style.valueInput}/>
                     </div>
                     <div>
                         <Button callBack={onClickStartValue}

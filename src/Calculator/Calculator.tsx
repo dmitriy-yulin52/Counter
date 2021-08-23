@@ -2,7 +2,7 @@ import React from 'react';
 import c from './Calculator.module.css'
 import {CalculatorType} from "../Redux/calculator-reducer";
 import {CounterContainer} from "../Components/Counter/CounterContainer";
-import {SetCounterContainer} from "../Components/SetCounter/SeCounterContainer";
+import {SetCounterContainer} from "../Components/SetCounter/SetCounterContainer";
 
 
 type PropsType = {
