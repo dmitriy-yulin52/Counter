@@ -8,7 +8,7 @@ export enum CALCULATOR_ACTION_TYPE {
 
 
 export type CalculatorType = typeof initialState
-type ActionType =
+export type ActionType =
     SetCounterACType
     | SetMaxValueACType
     | SetStartValueACType

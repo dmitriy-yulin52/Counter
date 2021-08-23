@@ -1,8 +1,9 @@
 import React, {useCallback} from 'react'
 import {useDispatch, useSelector} from "react-redux";
-import {Counter} from "./Counter";
+import {CopyCounter} from "./Counter";
 import {AppStateType} from "../../Redux/storeRedux";
-import {setCollapsedAC, setCounterAC} from "../../Redux/calculator-reducer";
+import {ActionType, setCollapsedAC, setCounterAC} from "../../Redux/calculator-reducer";
+import {Dispatch} from "redux";
 
 
 
@@ -15,7 +16,7 @@ export const CounterContainer = React.memo(()=> {
         startValue,
         message,
     } = useSelector((state:AppStateType)=>state.calculator)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<Dispatch<ActionType>>()
 
 
     const setIncCounter = useCallback((counter:number) => {
@@ -31,7 +32,7 @@ export const CounterContainer = React.memo(()=> {
 
 
     return(
-        <Counter
+        <CopyCounter
             startCounter={counter}
             startCollapsed={collapsed}
             maxValue={maxValue}

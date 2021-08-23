@@ -1,7 +1,9 @@
 import React from 'react';
 import {NavLink, Route} from 'react-router-dom';
 import  './App.css';
-import CalculatorContainer from "./Calculator/CalculatorContainer";
+import {CopyCalculator} from "./CopyCalculator/CopyCalculator";
+import {Calculator} from "./Calculator/Calculator";
+import {SecondCounterContainer} from "./CopyCalculator/SecondCounter/SecondCounterContainer";
 
 
 function App() {
@@ -37,13 +39,17 @@ function App() {
                     <NavLink to={'/global'}>Counter</NavLink>
                 </div>
                 <div className={'navLink'}>
-                    <NavLink to={'/Calculator'}>Calculator</NavLink>
+                    <NavLink to={'/SecondCounter'}>Another counter</NavLink>
                 </div>
             </div>
 
             <Route
                 path={'/global'}
-                render={()=><CalculatorContainer/>}
+                render={()=><Calculator/>}
+            />
+            <Route
+                path={'/SecondCounter'}
+                render={()=><SecondCounterContainer/>}
             />
 
         </div>

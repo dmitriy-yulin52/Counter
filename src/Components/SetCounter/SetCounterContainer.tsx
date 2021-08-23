@@ -1,14 +1,16 @@
-import React, {ChangeEvent, useCallback} from 'react'
+import React, {useCallback} from 'react'
 import {SetCounter} from "./SetCounter";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../Redux/storeRedux";
 import {
+    ActionType,
     setCollapsedAC,
     setCounterAC,
     setMaxValueAC,
     setMessageAC,
     setStartValueAC
 } from "../../Redux/calculator-reducer";
+import {Dispatch} from "redux";
 
 
 export const SetCounterContainer = React.memo(() => {
@@ -20,7 +22,7 @@ export const SetCounterContainer = React.memo(() => {
         collapsed,
     } = useSelector((state: AppStateType) => state.calculator)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<Dispatch<ActionType>>()
 
 
     const changeMaxValue = useCallback((value: number) => {
@@ -41,7 +43,7 @@ export const SetCounterContainer = React.memo(() => {
             dispatch(setMessageAC('Incorrect value'))
         }
         dispatch(setStartValueAC(value))
-    },[setMessageAC,])
+    },[setMessageAC])
 
     const addStartValue = useCallback((message:string) => {
         dispatch(setCounterAC(startValue))
@@ -62,43 +64,3 @@ export const SetCounterContainer = React.memo(() => {
     )
 })
 
-
-//
-// type mapStateToPropsType = {
-//     calculator: CalculatorType
-// }
-// type mapDispatchToPropsType = {
-//     counter: (counter: number) => void
-//     maxValue: (value: number) => void
-//     message: (message: string) => void
-//     startValue: (value: number) => void
-//     collapsed:(collapsed:boolean)=> void
-// }
-//
-// const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
-//     return {
-//         calculator: state.calculator
-//     }
-// }
-// const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
-//     return {
-//         counter: (counter: number) => {
-//             dispatch(setCounterAC(counter))
-//         },
-//         maxValue: (value: number) => {
-//             dispatch(setMaxValueAC(value))
-//         },
-//         message: (message: string) => {
-//             dispatch(setMessageAC(message))
-//         },
-//         startValue: (value: number) => {
-//             dispatch(setStartValueAC(value))
-//         },
-//         collapsed:(collapsed:boolean)=> {
-//             dispatch(setCollapsedAC(collapsed))
-//         }
-//     }
-// }
-
-
-// export let SetCounterContainer = connect(mapStateToProps, mapDispatchToProps)(SetCounter)

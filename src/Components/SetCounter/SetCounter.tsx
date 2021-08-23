@@ -5,14 +5,14 @@ import {Button} from "../../Button/Button";
 type SetCounterType = {
     changeMaxValue: (value: number) => void
     changeStartValue: (value: number) => void
-    addStartValue: (message:string) => void
-    maxValue:number
-    startValue:number
-    startCounter:number
+    addStartValue: (message: string) => void
+    maxValue: number
+    startValue: number
+    startCounter: number
 }
 
 
-export const SetCounter:React.FC<SetCounterType>=(props)=> {
+export const SetCounter: React.FC<SetCounterType> = (props) => {
 
     const {
         maxValue,
@@ -24,47 +24,19 @@ export const SetCounter:React.FC<SetCounterType>=(props)=> {
     } = props
 
 
-    // const onChangeMaxValue = (e: ChangeEvent<HTMLInputElement>) => {
-    //     if (+e.currentTarget.value) {
-    //         message('enter values and press "set"')
-    //     }
-    //     maxValue(+e.currentTarget.value)
-    // }
-    // const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
-    //     if (+e.currentTarget.value >= 0) {
-    //         message('enter values and press "set"')
-    //     }
-    //     if (+e.currentTarget.value < 0) {
-    //         message('Incorrect value')
-    //
-    //     }
-    //     if (+e.currentTarget.value >= maxValue) {
-    //         message('Incorrect value')
-    //     }
-    //     startValue(+e.currentTarget.value)
-    // }
-    // const addStartValue = (startValue: number) => {
-    //     counter(startValue)
-    // }
-    // const onClickStartValue = () => {
-    //     addStartValue(startValue)
-    //     message('')
-    //     collapsed(!startCollapsed)
-    // }
-
-    const onChangeMaxValueHandler = (e:ChangeEvent<HTMLInputElement>)=> {
+    const onChangeMaxValueHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeMaxValue(Number(e.currentTarget.value))
     }
-    const onChangeStartValue = (e:ChangeEvent<HTMLInputElement>)=> {
+    const onChangeStartValue = (e: ChangeEvent<HTMLInputElement>) => {
         changeStartValue(Number(e.currentTarget.value))
     }
-    const onClickStartValue = ()=> {
+    const onClickStartValue = () => {
         addStartValue('')
     }
 
     const disabledStartValue = startValue >= maxValue || startValue < 0 || startCounter === maxValue
 
-    return(
+    return (
         <div className={style.content_blockTwo}>
             <div className={style.content_btnTwo}>
                 <div className={style.maxValueBlock}>

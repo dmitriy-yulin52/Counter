@@ -13,7 +13,7 @@ type CounterType = {
     setStartValue:(startValue:number,startCollapsed:boolean)=> void
 }
 
-export const Counter:React.FC<CounterType> = React.memo((props) => {
+export const CopyCounter:React.FC<CounterType> = React.memo((props) => {
     let {
         startCollapsed,
         startCounter,

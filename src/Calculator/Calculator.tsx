@@ -1,18 +1,18 @@
 import React from 'react';
 import c from './Calculator.module.css'
-import {CalculatorType} from "../Redux/calculator-reducer";
 import {CounterContainer} from "../Components/Counter/CounterContainer";
 import {SetCounterContainer} from "../Components/SetCounter/SetCounterContainer";
+import {useSelector} from "react-redux";
+import {AppStateType} from "../Redux/storeRedux";
 
 
-type PropsType = {
-    calculator: CalculatorType
 
-}
-export const Calculator: React.FC<PropsType> = (props) => {
-    const {calculator} = props
+export const Calculator = React.memo(() => {
 
 
+    const {
+        collapsed
+    }= useSelector((state:AppStateType)=>state.calculator)
     //startValue
     // useEffect(() => {
     //     let valueAsString = localStorage.getItem('clickStartValue')
@@ -42,11 +42,11 @@ export const Calculator: React.FC<PropsType> = (props) => {
 
     return (
         <div className={c.content}>
-            {calculator.collapsed
+            {collapsed
                 ? <CounterContainer/>
                 :<SetCounterContainer/>
             }
         </div>
     )
-}
+})
 
